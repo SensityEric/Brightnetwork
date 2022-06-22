@@ -225,41 +225,6 @@ def RRT_star(startpos, endpos, obstacles, n_iter, radius, stepSize):
 
 
 
-def dijkstra(G):
-  '''
-  Dijkstra algorithm for finding shortest path from start position to end.
-  '''
-    srcIdx = G.vex2idx[G.startpos]
-    dstIdx = G.vex2idx[G.endpos]
-
-    # build dijkstra
-    nodes = list(G.neighbors.keys())
-    dist = {node: float('inf') for node in nodes}
-    prev = {node: None for node in nodes}
-    dist[srcIdx] = 0
-
-    while nodes:
-        curNode = min(nodes, key=lambda node: dist[node])
-        nodes.remove(curNode)
-        if dist[curNode] == float('inf'):
-            break
-
-        for neighbor, cost in G.neighbors[curNode]:
-            newCost = dist[curNode] + cost
-            if newCost < dist[neighbor]:
-                dist[neighbor] = newCost
-                prev[neighbor] = curNode
-
-    # retrieve path
-    path = deque()
-    curNode = dstIdx
-    while prev[curNode] is not None:
-        path.appendleft(G.vertices[curNode])
-        curNode = prev[curNode]
-    path.appendleft(G.vertices[curNode])
-    return list(path)
-
-
 
 def plot(G, obstacles, radius, path=None):
   '''
@@ -291,28 +256,12 @@ def plot(G, obstacles, radius, path=None):
     plt.show()
 
 
-def pathSearch(startpos, endpos, obstacles, n_iter, radius, stepSize):
-    G = RRT_star(startpos, endpos, obstacles, n_iter, radius, stepSize)
-    if G.success:
-        path = dijkstra(G)
-        # plot(G, obstacles, radius, path)
-        return path
 
 
 if __name__ == '__main__':
-    startpos = (0., 0.)
-    endpos = (5., 5.)
-    obstacles = [(1., 1.), (2., 2.)]
-    n_iter = 200
-    radius = 0.5
-    stepSize = 0.7
+    startpos = (0, 0)
+    endpos = (9, 9)
+    obstacles = [(9, 7), (6, 7)(6,8)]
+  
 
-    G = RRT_star(startpos, endpos, obstacles, n_iter, radius, stepSize)
-    # G = RRT(startpos, endpos, obstacles, n_iter, radius, stepSize)
-
-    if G.success:
-        path = dijkstra(G)
-        print(path)
-        plot(G, obstacles, radius, path)
-    else:
-        plot(G, obstacles, radius)
+ 
